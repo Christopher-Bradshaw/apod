@@ -1,8 +1,0 @@
-Christopher Bradshaw
-3/1/2013
-apod
-
-Two scripts, apod.sh and apod.py which pull the image from the latest
-http://apod.nasa.gov/apod/astropix.html and set it as a desktop backgroud.
-
-Tested in Fedora. Should work in any gnome system. 
