@@ -2,25 +2,34 @@
 
 # Attempts to mimic apod.sh
 
-import urllib
+import urllib.request
 import sys
 import os
 from bs4 import BeautifulSoup
 
-# Retrieve webpage
-filename = "x" # filename = tmp stopped working for some reason? tmp was dir???
-urllib.request.urlretrieve("http://apod.nasa.gov/apod/astropix.html", filename)
+import tempfile
 
-f = open(filename, "r")
-data = [line for line in f]
-soup = BeautifulSoup(''.join(data), "html5lib")
-os.remove(filename)
+# Retrieve webpage
+try:
+    _, filename = tempfile.mkstemp()
+    urllib.request.urlretrieve("http://apod.nasa.gov/apod/astropix.html", filename)
+
+    f = open(filename, "r")
+    data = [line for line in f]
+    os.remove(filename)
+    soup = BeautifulSoup(''.join(data), "html5lib")
+except Exception as e:
+    print(e)
+    os.remove(filename)
+    sys.exit()
 
 try:
     src = soup.body.find_all("a")[1].img["src"]
     if not src:
+        print("No src")
         sys.exit()
-except:
+except Exception as e:
+    print(e)
     sys.exit()
 
 # Found the line in which the name is. Extract it
